@@ -1,0 +1,154 @@
+@model LeaveManagementSystem.ViewModels.ApplyLeaveVM
+@{
+    ViewData["Title"] = "Apply Leave";
+    Layout = "_EmployeeLayout";
+    var leaveTypes = ViewBag.LeaveTypes as IEnumerable<LeaveManagementSystem.Models.LeaveType> ?? Enumerable.Empty<LeaveManagementSystem.Models.LeaveType>();
+}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">
+                    <i class="fas fa-paper-plane mr-2 text-primary"></i>
+                    Apply for Leave
+                </h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">
+                        <a asp-controller="Dashboard" asp-action="Index"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    <li class="breadcrumb-item active">Apply Leave</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-md-7">
+                <div class="card card-outline card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-calendar-plus mr-2"></i>
+                            Leave Application Form
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="Apply" method="post" id="leaveApplyForm">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+
+                            <div class="form-group">
+                                <label asp-for="LeaveTypeId">
+                                    <i class="fas fa-list-alt mr-1 text-muted"></i>
+                                    Leave Type
+                                </label>
+                                <select asp-for="LeaveTypeId" class="form-control">
+                                    <option value="">Select</option>
+                                    @foreach (var lt in leaveTypes)
+                                    {
+                                        <option value="@lt.Id">@lt.Name</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="LeaveTypeId" class="text-danger small"></span>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="StartDate">
+                                            <i class="fas fa-calendar-day mr-1 text-muted"></i>
+                                            Start Date
+                                        </label>
+                                        <input asp-for="StartDate" type="date" class="form-control" id="startDate" />
+                                        <span asp-validation-for="StartDate" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="EndDate">
+                                            <i class="fas fa-calendar-check mr-1 text-muted"></i>
+                                            End Date
+                                        </label>
+                                        <input asp-for="EndDate" type="date" class="form-control" id="endDate" />
+                                        <span asp-validation-for="EndDate" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>
+                                    <i class="fas fa-sun mr-1 text-muted"></i>
+                                    Working Days
+                                </label>
+                                <div class="d-flex align-items-center">
+                                    <div id="workingDaysDisplay" class="working-days-pill">
+                                        <span id="workingDaysCount" aria-live="polite">0</span>
+                                    </div>
+                                    <span class="ml-3 text-muted">working days selected</span>
+                                </div>
+                                <span id="workingDays" class="d-none">0</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Reason">
+                                    <i class="fas fa-comment-alt mr-1 text-muted"></i>
+                                    Reason
+                                    <small class="text-muted">(optional)</small>
+                                </label>
+                                <textarea asp-for="Reason" class="form-control" rows="3" placeholder="Brief reason for leave..." maxlength="500" id="reasonField"></textarea>
+                                <small class="form-text text-muted text-right">
+                                    <span id="charCount">0</span>/500 characters
+                                </small>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input asp-for="IsHalfDay" class="form-check-input" type="checkbox" id="isHalfDayLeave" />
+                                    <label class="form-check-label" for="isHalfDayLeave">
+                                        Apply as half-day leave (single date only)
+                                    </label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer bg-light">
+                        <button class="btn btn-primary mr-2" type="submit" form="leaveApplyForm">
+                            <i class="fas fa-paper-plane mr-1"></i>
+                            Submit Application
+                        </button>
+                        <a asp-controller="LeaveRequest" asp-action="MyRequests" class="btn btn-default">
+                            <i class="fas fa-times mr-1"></i>Cancel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScripts" />
+    <script src="~/js/leave-request.js"></script>
+    <script>
+        (function () {
+            var reasonField = document.getElementById('reasonField');
+            var charCount = document.getElementById('charCount');
+            if (reasonField && charCount) {
+                var syncCount = function () { charCount.textContent = reasonField.value.length; };
+                reasonField.addEventListener('input', syncCount);
+                syncCount();
+            }
+
+            var hiddenDays = document.getElementById('workingDays');
+            var visibleDays = document.getElementById('workingDaysCount');
+            if (hiddenDays && visibleDays && window.MutationObserver) {
+                var observer = new MutationObserver(function () {
+                    visibleDays.textContent = hiddenDays.textContent.trim() || "0";
+                });
+                observer.observe(hiddenDays, { childList: true, characterData: true, subtree: true });
+                visibleDays.textContent = hiddenDays.textContent.trim() || "0";
+            }
+        })();
+    </script>
+}

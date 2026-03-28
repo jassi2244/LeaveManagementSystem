@@ -1,0 +1,23 @@
+@model LeaveManagementSystem.ViewModels.ApproveLeaveVM
+@{
+    ViewData["Title"] = "Approve Leave";
+    Layout = "_ManagerLayout";
+}
+<div class="card">
+    <div class="card-header">Approve Leave Request</div>
+    <div class="card-body">
+        <p><strong>Employee:</strong> @Model.EmployeeName</p>
+        <p><strong>Leave Type:</strong> @Model.LeaveTypeName</p>
+        <p><strong>Days:</strong> @Model.NumberOfDays</p>
+        <form asp-action="Approve" method="post" id="approveForm">
+            <input asp-for="LeaveRequestId" type="hidden" />
+            <div class="mb-3">
+                <label asp-for="Comments" class="form-label"></label>
+                <textarea asp-for="Comments" class="form-control"></textarea>
+            </div>
+            <button class="btn btn-success" type="submit">Approve</button>
+            <button class="btn btn-outline-secondary ml-2" type="reset">Reset</button>
+            <button type="button" class="btn btn-danger reject-btn" data-id="@Model.LeaveRequestId">Reject</button>
+        </form>
+    </div>
+</div>

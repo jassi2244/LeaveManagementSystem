@@ -1,0 +1,97 @@
+@model IEnumerable<LeaveManagementSystem.Models.AuditLog>
+@{
+    ViewData["Title"] = "Activity History";
+    Layout = "_AdminLayout";
+    var performerDisplayNames = ViewBag.PerformerDisplayNames as Dictionary<string, string> ?? new Dictionary<string, string>();
+
+    string FriendlyEntity(string value) => value switch
+    {
+        "LeaveRequest" => "Leave Request",
+        "LeaveAllocation" => "Leave Allocation",
+        _ => value
+    };
+
+    string ActionBadgeHtml(string action) => action switch
+    {
+        var a when a.Contains("Approve Leave", StringComparison.OrdinalIgnoreCase) => "<span class='badge badge-success'><i class='fas fa-check mr-1'></i>Approve Leave</span>",
+        var a when a.Contains("Reject Leave", StringComparison.OrdinalIgnoreCase) => "<span class='badge badge-danger'><i class='fas fa-times mr-1'></i>Reject Leave</span>",
+        var a when a.Contains("Allocate Leave", StringComparison.OrdinalIgnoreCase) => "<span class='badge badge-info'><i class='fas fa-plus mr-1'></i>Allocate Leave</span>",
+        var a when a.Contains("Cancel Leave", StringComparison.OrdinalIgnoreCase) => "<span class='badge badge-warning text-dark'><i class='fas fa-ban mr-1'></i>Cancel Leave</span>",
+        var a when a.Contains("Apply Leave", StringComparison.OrdinalIgnoreCase) => "<span class='badge badge-primary'><i class='fas fa-paper-plane mr-1'></i>Apply Leave</span>",
+        _ => $"<span class='badge badge-secondary'>{action}</span>"
+    };
+
+    string PerformerLabel(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return "-";
+        if (string.Equals(value, "SYSTEM", StringComparison.OrdinalIgnoreCase)) return "System";
+        return performerDisplayNames.TryGetValue(value, out var display) ? display : value;
+    }
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">
+                    <i class="fas fa-history mr-2 text-primary"></i>
+                    Activity History
+                </h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">
+                        <a asp-controller="Dashboard" asp-action="Index">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active">Activity History</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card card-outline card-primary">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-history mr-2"></i>Audit Trail
+        </h3>
+    </div>
+    <div class="card-body p-0">
+    <div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover data-table mb-0">
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Action</th>
+                <th>Entity</th>
+                <th>User</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Timestamp.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@Html.Raw(ActionBadgeHtml(item.Action))</td>
+                <td>@FriendlyEntity(item.EntityName)</td>
+                <td>
+                    @{
+                        var label = PerformerLabel(item.PerformedBy);
+                    }
+                    <div class="d-flex align-items-center">
+                        <div class="avatar-circle-xs">
+                            @(string.IsNullOrWhiteSpace(label) ? "U" : label.Substring(0, 1).ToUpper())
+                        </div>
+                        <span>@label</span>
+                    </div>
+                </td>
+                <td>@(string.IsNullOrWhiteSpace(item.NewValues) ? "-" : item.NewValues)</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+</div>
+</div>

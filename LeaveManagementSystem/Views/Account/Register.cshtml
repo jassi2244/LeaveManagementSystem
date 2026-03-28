@@ -1,0 +1,107 @@
+@model LeaveManagementSystem.ViewModels.RegisterVM
+@{
+    ViewData["Title"] = "Register User";
+    Layout = "_AdminLayout";
+}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">
+                    <i class="fas fa-user-plus mr-2 text-primary"></i>
+                    Register User
+                </h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">
+                        <a asp-controller="Dashboard" asp-action="Index">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active">Register User</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card card-outline card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-id-badge mr-2"></i>User Information
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="Register" method="post" id="registerUserForm">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="FullName"><i class="fas fa-user mr-1 text-muted"></i>Full Name</label>
+                                        <input asp-for="FullName" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Email"><i class="fas fa-envelope mr-1 text-muted"></i>Email</label>
+                                        <input asp-for="Email" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Password"><i class="fas fa-lock mr-1 text-muted"></i>Password</label>
+                                        <input asp-for="Password" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Role"><i class="fas fa-shield-alt mr-1 text-muted"></i>Role</label>
+                                        <select asp-for="Role" class="custom-select">
+                                            <option>Employee</option>
+                                            <option>Manager</option>
+                                            <option>Admin</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="DepartmentId"><i class="fas fa-building mr-1 text-muted"></i>Department</label>
+                                        <input asp-for="DepartmentId" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="ManagerId"><i class="fas fa-user-tie mr-1 text-muted"></i>Manager</label>
+                                        <input asp-for="ManagerId" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="DateOfJoining"><i class="fas fa-calendar-day mr-1 text-muted"></i>Date Of Joining</label>
+                                        <input asp-for="DateOfJoining" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer bg-light">
+                        <button class="btn btn-primary mr-2" type="submit" form="registerUserForm">
+                            <i class="fas fa-save mr-1"></i>Register
+                        </button>
+                        <button class="btn btn-outline-secondary" type="reset" form="registerUserForm">
+                            <i class="fas fa-redo mr-1"></i>Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScripts" />
+}

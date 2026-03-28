@@ -1,0 +1,152 @@
+@model LeaveManagementSystem.ViewModels.RegisterVM
+@{
+    ViewData["Title"] = "Create Employee";
+    Layout = "_AdminLayout";
+    var managers = ViewBag.Managers as IEnumerable<LeaveManagementSystem.Models.ApplicationUser> ?? Enumerable.Empty<LeaveManagementSystem.Models.ApplicationUser>();
+}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">
+                    <i class="fas fa-user-plus mr-2 text-primary"></i>
+                    Create Employee
+                </h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">
+                        <a asp-controller="Dashboard" asp-action="Index"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a asp-controller="Admin" asp-action="Employees">Employees</a>
+                    </li>
+                    <li class="breadcrumb-item active">Create</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card card-outline card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-user-plus mr-2"></i>
+                            Employee Information
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="CreateEmployee" method="post" id="createEmployeeForm">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="FullName">
+                                            <i class="fas fa-user mr-1 text-muted"></i>
+                                            Full Name
+                                        </label>
+                                        <input asp-for="FullName" class="form-control" placeholder="Enter full name" />
+                                        <span asp-validation-for="FullName" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Email">
+                                            <i class="fas fa-envelope mr-1 text-muted"></i>
+                                            Email Address
+                                        </label>
+                                        <input asp-for="Email" class="form-control" placeholder="Enter email address" />
+                                        <span asp-validation-for="Email" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Password">
+                                            <i class="fas fa-lock mr-1 text-muted"></i>
+                                            Password
+                                        </label>
+                                        <div class="input-group">
+                                            <input asp-for="Password" class="form-control" type="password" placeholder="Enter password" id="passwordField" />
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-outline-secondary" onclick="togglePassword()">
+                                                    <i class="fas fa-eye" id="eyeIcon"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="Password" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Role">
+                                            <i class="fas fa-shield-alt mr-1 text-muted"></i>
+                                            Role
+                                        </label>
+                                        <select asp-for="Role" class="custom-select">
+                                            <option>Employee</option>
+                                            <option>Manager</option>
+                                        </select>
+                                        <span asp-validation-for="Role" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="ManagerId">
+                                            <i class="fas fa-user-tie mr-1 text-muted"></i>
+                                            Reporting Manager
+                                            <small class="text-muted">(optional)</small>
+                                        </label>
+                                        <select asp-for="ManagerId" class="custom-select">
+                                            <option value="">Select manager (optional)</option>
+                                            @foreach (var manager in managers)
+                                            {
+                                                <option value="@manager.Id">@manager.FullName (@manager.Email)</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer bg-light">
+                        <button type="submit" form="createEmployeeForm" class="btn btn-primary mr-2">
+                            <i class="fas fa-save mr-1"></i>Create Employee
+                        </button>
+                        <a asp-controller="Admin" asp-action="Employees" class="btn btn-default">
+                            <i class="fas fa-times mr-1"></i>Cancel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScripts" />
+    <script>
+        function togglePassword() {
+            var field = document.getElementById('passwordField');
+            var icon = document.getElementById('eyeIcon');
+            if (!field || !icon) return;
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                field.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+    </script>
+}

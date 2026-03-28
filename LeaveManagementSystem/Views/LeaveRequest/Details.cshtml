@@ -1,0 +1,143 @@
+@model LeaveManagementSystem.Models.LeaveRequest
+@{
+    ViewData["Title"] = "Leave Details";
+}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">
+                    <i class="fas fa-eye mr-2 text-primary"></i>
+                    Leave Request Details
+                </h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">
+                        <a asp-controller="Dashboard" asp-action="Index"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a asp-controller="LeaveRequest" asp-action="Index">Leave Requests</a>
+                    </li>
+                    <li class="breadcrumb-item active">Details</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card card-outline card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-calendar-alt mr-2"></i>
+                            Leave Request #@Model.Id
+                        </h3>
+                        <div class="card-tools">
+                            @if (Model.Status == "Approved")
+                            {
+                                <span class="badge badge-success badge-lg p-2">
+                                    <i class="fas fa-check mr-1"></i>Approved
+                                </span>
+                            }
+                            else if (Model.Status == "Pending")
+                            {
+                                <span class="badge badge-warning text-dark badge-lg p-2">
+                                    <i class="fas fa-clock mr-1"></i>Pending
+                                </span>
+                            }
+                            else if (Model.Status == "Rejected")
+                            {
+                                <span class="badge badge-danger badge-lg p-2">
+                                    <i class="fas fa-times mr-1"></i>Rejected
+                                </span>
+                            }
+                            else if (Model.Status == "Cancelled")
+                            {
+                                <span class="badge badge-secondary badge-lg p-2">
+                                    <i class="fas fa-ban mr-1"></i>Cancelled
+                                </span>
+                            }
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3 d-flex align-items-center">
+                                    <div style="width:36px; height:36px; border-radius:8px; background:#e8f4fd; display:flex; align-items:center; justify-content:center; margin-right:12px; flex-shrink:0;">
+                                        <i class="fas fa-user text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Employee</small>
+                                        <strong>@Model.RequestingEmployee?.FullName</strong>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 d-flex align-items-center">
+                                    <div style="width:36px; height:36px; border-radius:8px; background:#e8f8f0; display:flex; align-items:center; justify-content:center; margin-right:12px; flex-shrink:0;">
+                                        <i class="fas fa-list-alt text-success"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Leave Type</small>
+                                        <strong>@Model.LeaveType?.Name</strong>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 d-flex align-items-center">
+                                    <div style="width:36px; height:36px; border-radius:8px; background:#fef9e7; display:flex; align-items:center; justify-content:center; margin-right:12px; flex-shrink:0;">
+                                        <i class="fas fa-comment text-warning"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Reason</small>
+                                        <strong>@(string.IsNullOrWhiteSpace(Model.Reason) ? "N/A" : Model.Reason)</strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3 d-flex align-items-center">
+                                    <div style="width:36px; height:36px; border-radius:8px; background:#e8f4fd; display:flex; align-items:center; justify-content:center; margin-right:12px; flex-shrink:0;">
+                                        <i class="fas fa-calendar-day text-info"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Start Date</small>
+                                        <strong>@Model.StartDate.ToString("dd MMM yyyy")</strong>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 d-flex align-items-center">
+                                    <div style="width:36px; height:36px; border-radius:8px; background:#fde8e8; display:flex; align-items:center; justify-content:center; margin-right:12px; flex-shrink:0;">
+                                        <i class="fas fa-calendar-check text-danger"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">End Date</small>
+                                        <strong>@Model.EndDate.ToString("dd MMM yyyy")</strong>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 d-flex align-items-center">
+                                    <div style="width:36px; height:36px; border-radius:8px; background:#e8f8f0; display:flex; align-items:center; justify-content:center; margin-right:12px; flex-shrink:0;">
+                                        <i class="fas fa-sun text-success"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Number of Days</small>
+                                        <strong>@Model.NumberOfDays days</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-light">
+                        <a asp-controller="LeaveRequest" asp-action="Index" class="btn btn-default btn-sm">
+                            <i class="fas fa-arrow-left mr-1"></i>
+                            Back to List
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

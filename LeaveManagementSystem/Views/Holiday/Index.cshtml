@@ -1,0 +1,79 @@
+@model IEnumerable<LeaveManagementSystem.ViewModels.HolidayVM>
+@{
+    ViewData["Title"] = "Holidays";
+    Layout = "_AdminLayout";
+}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">
+                    <i class="fas fa-umbrella-beach mr-2 text-primary"></i>
+                    Holidays
+                </h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">
+                        <a asp-controller="Dashboard" asp-action="Index">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active">Holidays</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card card-outline card-primary">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-umbrella-beach mr-2"></i>Holiday Calendar
+        </h3>
+        <div class="card-tools">
+            <a asp-action="Create" class="btn btn-primary btn-sm"><i class="fas fa-plus mr-1"></i>Add Holiday</a>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-striped table-hover table-bordered data-table mb-0">
+            <thead><tr><th>Name</th><th>Date</th><th>Description</th><th>Actions</th></tr></thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                var isUpcoming = item.HolidayDate.Date >= DateTime.Today;
+                <tr class="@(isUpcoming ? "table-warning" : "")">
+                    <td><i class="fas fa-calendar-day text-primary mr-2"></i>@item.Name</td>
+                    <td>@item.HolidayDate.ToShortDateString()</td>
+                    <td>
+                        @{
+                            var desc = item.Description ?? string.Empty;
+                            if (desc.Contains("National", StringComparison.OrdinalIgnoreCase))
+                            {
+                                <span class="badge badge-danger">National Holiday</span>
+                            }
+                            else if (desc.Contains("Festival", StringComparison.OrdinalIgnoreCase))
+                            {
+                                <span class="badge badge-warning text-dark">Festival Holiday</span>
+                            }
+                            else if (desc.Contains("Religious", StringComparison.OrdinalIgnoreCase))
+                            {
+                                <span class="badge badge-info">Religious Holiday</span>
+                            }
+                            else
+                            {
+                                <span>@item.Description</span>
+                            }
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-warning" aria-label="Edit @item.Name"><i class="fas fa-edit"></i></a>
+                        <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline swal-confirm-form" data-title="Delete holiday?" data-text="This holiday entry will be removed.">
+                            <button type="submit" class="btn btn-sm btn-outline-danger" aria-label="Delete @item.Name"><i class="fas fa-trash"></i></button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,335 @@
+@model LeaveManagementSystem.ViewModels.LoginVM
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login - Leave Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 50%;
+            top: -100px;
+            right: -100px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(118, 75, 162, 0.1);
+            border-radius: 50%;
+            bottom: -80px;
+            left: -80px;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        @@keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .login-wrapper {
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .logo-circle {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            box-shadow: 0 10px 30px rgba(102,126,234,0.4);
+        }
+
+        .logo-circle i {
+            font-size: 2rem;
+            color: white;
+        }
+
+        .login-logo h2 {
+            color: white;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .login-logo p {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.875rem;
+            margin-top: 4px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 16px;
+            padding: 36px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .login-card h4 {
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 6px;
+            font-size: 1.25rem;
+        }
+
+        .login-card .subtitle {
+            color: #6c757d;
+            font-size: 0.875rem;
+            margin-bottom: 28px;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #374151;
+            font-size: 0.875rem;
+            margin-bottom: 6px;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: stretch;
+        }
+
+        .input-group-text {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 12px;
+            background: #f8f9fa;
+            border: 1px solid #e5e7eb;
+            border-right: none;
+            color: #6c757d;
+            border-radius: 6px 0 0 6px;
+        }
+
+        .form-control {
+            border: 1px solid #e5e7eb;
+            border-left: none;
+            padding: 10px 14px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            width: 100%;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.15);
+            outline: none;
+        }
+
+        .input-group:focus-within .input-group-text {
+            border-color: #667eea;
+        }
+
+        .password-toggle {
+            border: 1px solid #e5e7eb;
+            border-left: none;
+            background: white;
+            padding: 10px 12px;
+            color: #6c757d;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .input-group.with-toggle .form-control {
+            border-radius: 0;
+        }
+
+        .btn-signin {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 12px;
+            font-size: 0.95rem;
+            border-radius: 10px;
+            width: 100%;
+            transition: all 0.3s;
+            margin-top: 8px;
+            cursor: pointer;
+        }
+
+        .btn-signin:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(102,126,234,0.4);
+            color: white;
+        }
+
+        .btn-signin:active {
+            transform: translateY(0);
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-check-label {
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+
+        .text-danger {
+            color: #dc2626;
+            font-size: 0.8rem;
+        }
+
+        .validation-summary-errors {
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin-bottom: 16px;
+        }
+
+        .validation-summary-errors ul {
+            margin: 0;
+            padding-left: 16px;
+            color: #dc2626;
+            font-size: 0.85rem;
+        }
+
+        .validation-summary-valid {
+            display: none;
+        }
+
+        .copyright {
+            text-align: center;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.8rem;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="login-wrapper">
+    <div class="login-logo">
+        <div class="logo-circle">
+            <i class="fas fa-calendar-check"></i>
+        </div>
+        <h2>Leave MS</h2>
+        <p>Leave Management System</p>
+    </div>
+
+    <div class="login-card">
+        <h4>Welcome back</h4>
+        <p class="subtitle">Sign in to your account to continue</p>
+
+        <div asp-validation-summary="ModelOnly" class="validation-summary-errors"></div>
+
+        <form asp-action="Login" method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label">Email Address</label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-envelope"></i>
+                    </span>
+                    <input asp-for="Email" class="form-control" placeholder="Enter your email" autocomplete="email" />
+                </div>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label">Password</label>
+                <div class="input-group with-toggle">
+                    <span class="input-group-text">
+                        <i class="fas fa-lock"></i>
+                    </span>
+                    <input asp-for="Password" type="password" class="form-control" placeholder="Enter your password" id="loginPassword" autocomplete="current-password" />
+                    <button type="button" class="password-toggle" onclick="toggleLoginPassword()">
+                        <i class="fas fa-eye" id="loginEyeIcon"></i>
+                    </button>
+                </div>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <div class="form-check">
+                    <input asp-for="RememberMe" class="form-check-input" type="checkbox" id="rememberMe" />
+                    <label class="form-check-label" for="rememberMe">Remember me</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-signin">
+                <i class="fas fa-sign-in-alt mr-2"></i>
+                Sign In
+            </button>
+        </form>
+    </div>
+
+    <div class="copyright">
+        &copy; 2026 LeaveManagementSystem. All rights reserved.
+    </div>
+</div>
+
+<script>
+    function toggleLoginPassword() {
+        var field = document.getElementById('loginPassword');
+        var icon = document.getElementById('loginEyeIcon');
+        if (field.type === 'password') {
+            field.type = 'text';
+            icon.className = 'fas fa-eye-slash';
+        } else {
+            field.type = 'password';
+            icon.className = 'fas fa-eye';
+        }
+    }
+</script>
+</body>
+</html>

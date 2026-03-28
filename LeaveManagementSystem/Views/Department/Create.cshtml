@@ -1,0 +1,76 @@
+@model LeaveManagementSystem.ViewModels.DepartmentVM
+@{
+    ViewData["Title"] = "Create Department";
+    Layout = "_AdminLayout";
+}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">
+                    <i class="fas fa-building mr-2 text-info"></i>
+                    Create Department
+                </h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">
+                        <a asp-controller="Dashboard" asp-action="Index"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a asp-controller="Department" asp-action="Index">Departments</a>
+                    </li>
+                    <li class="breadcrumb-item active">Create</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card card-outline card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-building mr-2"></i>Department Details
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="Create" method="post" id="createDepartmentForm">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+
+                            <div class="form-group">
+                                <label asp-for="Name">
+                                    <i class="fas fa-building mr-1 text-muted"></i>
+                                    Department Name
+                                </label>
+                                <input asp-for="Name" class="form-control" placeholder="e.g. IT Department, HR Department" />
+                                <span asp-validation-for="Name" class="text-danger small"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Description">
+                                    <i class="fas fa-align-left mr-1 text-muted"></i>
+                                    Description
+                                    <small class="text-muted">(optional)</small>
+                                </label>
+                                <textarea asp-for="Description" class="form-control" rows="3" placeholder="Brief description of this department..."></textarea>
+                                <span asp-validation-for="Description" class="text-danger small"></span>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer bg-light">
+                        <button type="submit" form="createDepartmentForm" class="btn btn-info mr-2">
+                            <i class="fas fa-save mr-1"></i>Save Department
+                        </button>
+                        <a asp-controller="Department" asp-action="Index" class="btn btn-default">
+                            <i class="fas fa-times mr-1"></i>Cancel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

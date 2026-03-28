@@ -1,0 +1,99 @@
+@model IEnumerable<LeaveManagementSystem.Models.ApplicationUser>
+@{
+    ViewData["Title"] = "Employees";
+    Layout = "_AdminLayout";
+}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">
+                    <i class="fas fa-users mr-2 text-primary"></i>
+                    Employees
+                </h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">
+                        <a asp-controller="Dashboard" asp-action="Index">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active">Employees</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card card-outline card-primary">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-users mr-2"></i>Employee Directory
+        </h3>
+        <div class="card-tools">
+            <a class="btn btn-primary btn-sm" asp-action="CreateEmployee">
+                <i class="fas fa-plus mr-1"></i>Add Employee
+            </a>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-striped table-hover table-bordered data-table mb-0">
+            <thead><tr><th>Name</th><th>Department</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+            @foreach (var e in Model)
+            {
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="avatar-circle-sm">
+                                @(string.IsNullOrWhiteSpace(e.FullName) ? "U" : e.FullName.Substring(0, 1).ToUpper())
+                            </div>
+                            <div>
+                                <div class="font-weight-bold">@e.FullName</div>
+                                <small class="text-muted">@e.Email</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>@((e.Department != null && e.Department.IsActive) ? e.Department.Name : "N/A")</td>
+                    <td>
+                        @if (e.IsActive)
+                        {
+                            <span class="badge badge-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-danger">Inactive</span>
+                        }
+                    </td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <a asp-action="EmployeeDetails" asp-route-id="@e.Id" class="btn btn-sm btn-outline-info mr-1" title="View Details" data-toggle="tooltip" aria-label="View details for @e.FullName">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <a asp-action="EditEmployee" asp-route-id="@e.Id" class="btn btn-sm btn-outline-warning mr-1" title="Edit Employee" data-toggle="tooltip" aria-label="Edit @e.FullName">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            @if (e.IsActive)
+                            {
+                                <form asp-action="DeleteEmployee" asp-route-id="@e.Id" method="post" class="d-inline swal-confirm-form mr-1" data-title="Deactivate employee?" data-text="This employee will be marked as inactive.">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Employee" data-toggle="tooltip" aria-label="Deactivate @e.FullName">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <form asp-action="ReactivateEmployee" asp-route-id="@e.Id" method="post" class="d-inline swal-confirm-form mr-1" data-title="Reactivate employee?" data-text="This employee account will be active again.">
+                                    <button type="submit" class="btn btn-sm btn-outline-success" title="Reactivate Employee" data-toggle="tooltip" aria-label="Reactivate @e.FullName">
+                                        <i class="fas fa-user-check"></i>
+                                    </button>
+                                </form>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

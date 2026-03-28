@@ -1,0 +1,86 @@
+@model LeaveManagementSystem.ViewModels.LeaveTypeVM
+@{
+    ViewData["Title"] = "Edit Leave Type";
+    Layout = "_AdminLayout";
+}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">
+                    <i class="fas fa-edit mr-2 text-warning"></i>
+                    Edit Leave Type
+                </h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">
+                        <a asp-controller="Dashboard" asp-action="Index"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a asp-controller="LeaveType" asp-action="Index">Leave Types</a>
+                    </li>
+                    <li class="breadcrumb-item active">Edit</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card card-outline card-warning">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-edit mr-2"></i>Edit Leave Type
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="Edit" method="post" id="editLeaveTypeForm">
+                            <input asp-for="Id" type="hidden" />
+                            <div asp-validation-summary="All" class="text-danger"></div>
+
+                            <div class="form-group">
+                                <label asp-for="Name">
+                                    <i class="fas fa-tag mr-1 text-muted"></i>
+                                    Leave Type Name
+                                </label>
+                                <input asp-for="Name" class="form-control" placeholder="e.g. Annual Leave" />
+                                <span asp-validation-for="Name" class="text-danger small"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="DefaultDays">
+                                    <i class="fas fa-calendar-day mr-1 text-muted"></i>
+                                    Default Days Per Year
+                                </label>
+                                <input asp-for="DefaultDays" type="number" class="form-control" placeholder="e.g. 15" />
+                                <small class="form-text text-muted">Days allocated annually for this leave type</small>
+                                <span asp-validation-for="DefaultDays" class="text-danger small"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Description">
+                                    <i class="fas fa-align-left mr-1 text-muted"></i>
+                                    Description
+                                    <small class="text-muted">(optional)</small>
+                                </label>
+                                <textarea asp-for="Description" class="form-control" rows="3" placeholder="Brief description..."></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer bg-light">
+                        <button type="submit" form="editLeaveTypeForm" class="btn btn-warning mr-2">
+                            <i class="fas fa-save mr-1"></i>Update Leave Type
+                        </button>
+                        <a asp-controller="LeaveType" asp-action="Index" class="btn btn-default">
+                            <i class="fas fa-times mr-1"></i>Cancel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

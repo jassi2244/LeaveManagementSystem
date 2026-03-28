@@ -1,0 +1,102 @@
+@model LeaveManagementSystem.ViewModels.RegisterVM
+@{
+    ViewData["Title"] = "Edit Employee";
+    Layout = "_AdminLayout";
+    var managers = ViewBag.Managers as IEnumerable<LeaveManagementSystem.Models.ApplicationUser> ?? Enumerable.Empty<LeaveManagementSystem.Models.ApplicationUser>();
+}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">
+                    <i class="fas fa-user-edit mr-2 text-warning"></i>
+                    Edit Employee
+                </h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">
+                        <a asp-controller="Dashboard" asp-action="Index"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a asp-controller="Admin" asp-action="Employees">Employees</a>
+                    </li>
+                    <li class="breadcrumb-item active">Edit</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card card-outline card-warning">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-user-edit mr-2"></i>Edit Employee Information
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" id="editEmployeeForm">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="FullName">
+                                            <i class="fas fa-user mr-1 text-muted"></i>
+                                            Full Name
+                                        </label>
+                                        <input asp-for="FullName" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Email">
+                                            <i class="fas fa-envelope mr-1 text-muted"></i>
+                                            Email
+                                        </label>
+                                        <input asp-for="Email" readonly class="form-control bg-light" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="DateOfJoining">
+                                            <i class="fas fa-calendar-day mr-1 text-muted"></i>
+                                            Date of Joining
+                                        </label>
+                                        <input asp-for="DateOfJoining" type="date" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="ManagerId">
+                                            <i class="fas fa-user-tie mr-1 text-muted"></i>
+                                            Reporting Manager
+                                        </label>
+                                        <select asp-for="ManagerId" class="custom-select">
+                                            <option value="">Select manager (optional)</option>
+                                            @foreach (var manager in managers)
+                                            {
+                                                <option value="@manager.Id">@manager.FullName (@manager.Email)</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer bg-light">
+                        <button type="submit" form="editEmployeeForm" class="btn btn-warning mr-2">
+                            <i class="fas fa-save mr-1"></i>Update Employee
+                        </button>
+                        <a asp-controller="Admin" asp-action="Employees" class="btn btn-default">
+                            <i class="fas fa-times mr-1"></i>Cancel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

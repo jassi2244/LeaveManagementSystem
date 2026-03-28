@@ -1,0 +1,94 @@
+@model IEnumerable<LeaveManagementSystem.Models.LeaveRequest>
+@{
+    ViewData["Title"] = "Team Calendar";
+    Layout = User.IsInRole("Admin") ? "_AdminLayout" : "_ManagerLayout";
+}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">
+                    <i class="fas fa-calendar-week mr-2 text-primary"></i>
+                    Team Calendar
+                </h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">
+                        <a asp-controller="Dashboard" asp-action="Index">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active">Team Calendar</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card card-outline card-primary">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-calendar-check mr-2"></i>
+            Team Leave Calendar
+        </h3>
+        <div class="card-tools">
+            <small class="text-muted">Upcoming approved leaves</small>
+        </div>
+    </div>
+    <div class="card-body p-0">
+    <div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover data-table mb-0">
+        <thead>
+            <tr>
+                <th>Employee</th>
+                <th>Leave Type</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Days</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.RequestingEmployee?.FullName</td>
+                <td>
+                    @{
+                        var leaveType = item.LeaveType?.Name ?? "";
+                        if (leaveType.Contains("Sick", StringComparison.OrdinalIgnoreCase))
+                        {
+                            <span class="badge badge-danger">Sick Leave</span>
+                        }
+                        else if (leaveType.Contains("Casual", StringComparison.OrdinalIgnoreCase))
+                        {
+                            <span class="badge badge-warning text-dark">Casual Leave</span>
+                        }
+                        else if (leaveType.Contains("Annual", StringComparison.OrdinalIgnoreCase))
+                        {
+                            <span class="badge badge-info">Annual Leave</span>
+                        }
+                        else if (leaveType.Contains("Maternity", StringComparison.OrdinalIgnoreCase))
+                        {
+                            <span class="badge badge-pink">Maternity Leave</span>
+                        }
+                        else if (leaveType.Contains("Paternity", StringComparison.OrdinalIgnoreCase))
+                        {
+                            <span class="badge badge-teal">Paternity Leave</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-secondary">@leaveType</span>
+                        }
+                    }
+                </td>
+                <td>@item.StartDate.ToString("yyyy-MM-dd")</td>
+                <td>@item.EndDate.ToString("yyyy-MM-dd")</td>
+                <td>@item.NumberOfDays</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+</div>
+</div>

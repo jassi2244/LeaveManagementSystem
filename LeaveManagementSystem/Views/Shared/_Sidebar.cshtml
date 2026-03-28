@@ -1,0 +1,93 @@
+@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+}
+<aside id="app-sidebar" class="main-sidebar sidebar-dark-primary elevation-4">
+    <a asp-controller="Dashboard" asp-action="Index" class="brand-link d-flex align-items-center">
+        <div class="brand-logo-badge">
+            <i class="fas fa-calendar-check text-white"></i>
+        </div>
+        <span class="brand-text font-weight-bold">
+            Leave <span style="color:#667eea;">MS</span>
+        </span>
+    </a>
+
+    <div class="sidebar">
+        <nav class="mt-2" aria-label="Main navigation">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview">
+                <li class="nav-item">
+                    <a asp-controller="Dashboard" asp-action="Index" class="nav-link @(currentController == "Dashboard" ? "active" : "")">
+                        <i class="nav-icon fas fa-gauge"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="LeaveRequest" asp-action="Index" class="nav-link @(currentController == "LeaveRequest" && currentAction == "Index" ? "active" : "")">
+                        <i class="nav-icon fas fa-calendar-days"></i>
+                        <p>Leave Requests</p>
+                    </a>
+                </li>
+
+                @if (User.IsInRole("Employee"))
+                {
+                    <li class="nav-item">
+                        <a asp-controller="LeaveRequest" asp-action="Apply" class="nav-link @(currentController == "LeaveRequest" && currentAction == "Apply" ? "active" : "")">
+                            <i class="nav-icon fas fa-paper-plane"></i>
+                            <p>Apply Leave</p>
+                        </a>
+                    </li>
+                }
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <li class="nav-item @(currentController == "Admin" ? "menu-open" : "")">
+                        <a asp-controller="Admin" asp-action="Employees" class="nav-link @(currentController == "Admin" ? "active" : "")">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>Employees</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-controller="LeaveType" asp-action="Index" class="nav-link @(currentController == "LeaveType" ? "active" : "")">
+                            <i class="nav-icon fas fa-list"></i>
+                            <p>Leave Types</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-controller="Department" asp-action="Index" class="nav-link @(currentController == "Department" ? "active" : "")">
+                            <i class="nav-icon fas fa-building"></i>
+                            <p>Departments</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-controller="Holiday" asp-action="Index" class="nav-link @(currentController == "Holiday" ? "active" : "")">
+                            <i class="nav-icon fas fa-tree"></i>
+                            <p>Holidays</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-controller="Audit" asp-action="Index" class="nav-link @(currentController == "Audit" ? "active" : "")">
+                            <i class="nav-icon fas fa-history"></i>
+                            <p>Activity History</p>
+                        </a>
+                    </li>
+                }
+
+                @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                {
+                    <li class="nav-item">
+                        <a asp-controller="TeamCalendar" asp-action="Index" class="nav-link @(currentController == "TeamCalendar" ? "active" : "")">
+                            <i class="nav-icon fas fa-calendar-check"></i>
+                            <p>Team Calendar</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-controller="Report" asp-action="LeaveReport" class="nav-link @(currentController == "Report" ? "active" : "")">
+                            <i class="nav-icon fas fa-chart-line"></i>
+                            <p>Reports</p>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+</aside>
